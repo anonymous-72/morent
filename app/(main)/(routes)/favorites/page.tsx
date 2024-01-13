@@ -19,10 +19,10 @@ export default function Favorites() {
         const typeName = carType ? carType.type : 'Unknown Type'
 
         const carCapacity = carCapacities?.find((capacity) => capacity._id === favoriteCar.capacity)
-        const capacityNumber = carCapacity ? carCapacity.capacity : 'Capacity Not Found'
+        const capacityNumber: number = Number(carCapacity?.capacity) || 0
 
         const carPrice = carPrices?.find((price) => price._id === favoriteCar.price)
-        const priceNumber = carPrice ? carPrice.price : 'Price Not Found'
+        const priceNumber: number = Number(carPrice?.price) || 0
 
         return {
             ...favoriteCar,
@@ -40,11 +40,11 @@ export default function Favorites() {
                     <CarItem
                         key={car._id}
                         id={car._id}
-                        title={car.title}
+                        title={car.title ?? ''}
                         type={car.typeName}
-                        imageUrl={car?.imageUrl}
-                        gasoline={car.gasoline}
-                        steering={car.steering}
+                        imageUrl={car?.imageUrl ?? ''}
+                        gasoline={car.gasoline ?? 0}
+                        steering={car.steering ?? ''}
                         capacity={car.capacityNumber}
                         price={car.priceNumber}
                         isLiked={car.isLiked}
