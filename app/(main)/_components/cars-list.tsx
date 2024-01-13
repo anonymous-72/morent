@@ -23,10 +23,10 @@ export const CarsList = () => {
         const typeName = carType ? carType.type : 'Unknown Type'
 
         const carCapacity = carCapacities?.find((capacity) => capacity._id === car.capacity)
-        const capacityNumber = carCapacity ? carCapacity.capacity : 'Capacity Not Found'
+        const capacityNumber: number = Number(carCapacity?.capacity) || 0
 
         const carPrice = carPrices?.find((price) => price._id === car.price)
-        const priceNumber = carPrice ? carPrice.price : 'Price Not Found'
+        const priceNumber: number = Number(carPrice?.price) || 0
 
         const isLiked = favoriteCarsIds.includes(car._id)
 

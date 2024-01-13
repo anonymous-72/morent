@@ -39,14 +39,18 @@ export const CarItem = ({
     const removeFromFavorites = useMutation(api.cars.removeFromFavorites)
 
     const handleLikeClick = () => {
-        if (liked) {
-            removeFromFavorites({ carId: id })
-            toast.success('Car was removed from your favorites!')
+        if (id) {
+            if (liked) {
+                removeFromFavorites({ carId: id })
+                toast.success('Car was removed from your favorites!')
+            } else {
+                addToFavorites({ carId: id })
+                toast.success('Car was added to your favorites!')
+            }
+            setLiked(!liked)
         } else {
-            addToFavorites({ carId: id })
-            toast.success('Car was added to your favorites!')
+            console.error('Error')
         }
-        setLiked(!liked)
     }
 
     return (
