@@ -37,7 +37,7 @@ export const Ads = () => {
                         carImageUrl={cars.adsOne.carImageUrl}
                         btnBackground={cars.adsOne.btnBackground}
                     />
-                    <div className='invisible lg:visible'>
+                    <div className='hidden lg:block'>
                         <AdItem
                             title={cars.adsTwo.title}
                             description={cars.adsTwo.description}
