@@ -10,12 +10,13 @@ import { useState } from "react"
 import { useUser } from "@clerk/clerk-react"
 import { toast } from "sonner"
 import { Id } from "@/convex/_generated/dataModel"
-import {format} from "date-fns";
-import {cn} from "@/lib/utils";
+import { format } from "date-fns"
+import { cn } from "@/lib/utils"
+import { usePathname } from "next/navigation"
 
 interface CarDataProps {
     params: {
-        carId: Id<'cars'>,
+        carId: Id<'cars'>
     }
 }
 
@@ -23,6 +24,7 @@ export const CarData = ({
     params
 }: CarDataProps) => {
     const { isAuthenticated, isLoading } = useConvexAuth()
+    const currentPathname = usePathname()
     const car = useQuery(api.cars.getById, {
         carId: params.carId
     })
@@ -66,7 +68,13 @@ export const CarData = ({
     }
 
     const openReviewSection = () => {
+        setReview('')
         setIsReviewVisible(true)
+    }
+
+    const closeReviewSection = () => {
+        setReview('')
+        setIsReviewVisible(false)
     }
 
     return (
@@ -90,7 +98,7 @@ export const CarData = ({
                                     alt="Car Image"
                                     className={cn('absolute bottom-6 left-6',
                                         car?.car.imageUrl === 'all-new-rush.png' ? 'md:w-[340px] md:h-[150px]'
-                                            : car?.car.imageUrl === 'rolls-royce.png' ? 'md:w-[380px] md:h-[100px]'
+                                            : car?.car.imageUrl === 'rolls-royce.png' ? 'md:w-[380px] md:h-[130px]'
                                                 : car?.car.imageUrl === 'cr-v.png' ? 'md:w-[380px] md:h-[160px]'
                                                     : car?.car.imageUrl === 'all-new-terios.png' ? 'md:w-[380px] md:h-[160px]'
                                                         : car?.car.imageUrl === 'mg-zx-exclusive.png' ? 'md:w-[380px] md:h-[160px]'
@@ -174,7 +182,11 @@ export const CarData = ({
                                 <div className='text-[#1A202C] text-[28px] font-bold dark:text-white'>
                                     ${car?.carPrice.price}.00/ <span className='text-base text-[#90A3BF]'>days</span>
                                 </div>
-                                <Link href={`${params.carId}/rent`}>
+                                <Link href={
+                                    isAuthenticated
+                                        ? `${params.carId}/rent`
+                                        : `${currentPathname}`
+                                }>
                                     <Button size='lg' className='bg-[#3563E9] dark:text-white hover:bg-[#081742]' onClick={onClick}>
                                         Rent Now
                                     </Button>
@@ -236,12 +248,21 @@ export const CarData = ({
                                             className='resize-none focus:outline-none flex justify-center w-full mb-4 border rounded-xl p-6'
                                         />
                                     <div className='flex justify-end'>
-                                        <Button
-                                            className='bg-[#3563E9] dark:text-white hover:bg-[#081742]'
-                                            onClick={onReviewSubmit}
-                                        >
-                                            Submit Review
-                                        </Button>
+                                        <div className='flex gap-2'>
+                                            <Button
+                                                variant='destructive'
+                                                onClick={closeReviewSection}
+                                            >
+                                                Cancel
+                                            </Button>
+                                            <Button
+                                                variant='secondary'
+                                                className='bg-[#3563E9] text-white hover:bg-[#274bb3]'
+                                                onClick={onReviewSubmit}
+                                            >
+                                                Submit Review
+                                            </Button>
+                                        </div>
                                     </div>
                                 </>
                             )}

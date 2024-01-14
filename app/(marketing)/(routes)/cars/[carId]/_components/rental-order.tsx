@@ -20,7 +20,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Id } from "@/convex/_generated/dataModel"
 import { toast } from "sonner"
-import { usePathname, useRouter } from "next/navigation"
+import { useRouter } from "next/navigation"
 
 interface RentalOrderProps {
     params: {
@@ -117,7 +117,6 @@ export const RentalOrder = ({
     params
 }: RentalOrderProps) => {
     const router = useRouter()
-    const currentPathname = usePathname()
     const createRentalOrder = useMutation(api.cars.createRentalOrder)
 
     const form = useForm<z.infer<typeof FormSchema>>({

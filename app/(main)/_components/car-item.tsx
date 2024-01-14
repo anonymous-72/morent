@@ -7,9 +7,8 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { Skeleton } from "@/components/ui/skeleton"
 import { api } from "@/convex/_generated/api"
-import { useMutation } from "convex/react"
-import { cn } from "@/lib/utils"
-import {toast} from "sonner";
+import { useConvexAuth, useMutation } from "convex/react"
+import { toast } from "sonner"
 
 interface CarItemProps {
     id?: Id<'cars'>
@@ -34,22 +33,27 @@ export const CarItem = ({
     price,
     isLiked
 }: CarItemProps) => {
+    const { isAuthenticated } = useConvexAuth()
     const [liked, setLiked] = useState(isLiked || false)
     const addToFavorites = useMutation(api.cars.addToFavorites)
     const removeFromFavorites = useMutation(api.cars.removeFromFavorites)
 
     const handleLikeClick = () => {
-        if (id) {
-            if (liked) {
-                removeFromFavorites({ carId: id })
-                toast.success('Car was removed from your favorites!')
+        if (isAuthenticated) {
+            if (id) {
+                if (liked) {
+                    removeFromFavorites({ carId: id })
+                    toast.success('Car was removed from your favorites!')
+                } else {
+                    addToFavorites({ carId: id })
+                    toast.success('Car was added to your favorites!')
+                }
+                setLiked(!liked)
             } else {
-                addToFavorites({ carId: id })
-                toast.success('Car was added to your favorites!')
+                console.error('Error')
             }
-            setLiked(!liked)
         } else {
-            console.error('Error')
+            toast.error('Please, log in to your account!')
         }
     }
 

@@ -23,11 +23,6 @@ export const Navbar = () => {
                 {isLoading && (
                     <Spinner size='md' />
                 )}
-            </div>
-            <div>
-                {isLoading && (
-                    <Spinner size='md' />
-                )}
                 {!isAuthenticated && !isLoading && (
                     <>
                         <div className='flex gap-2 md:gap-5'>
@@ -38,7 +33,7 @@ export const Navbar = () => {
                                 </Button>
                             </SignInButton>
                             <SignUpButton mode='modal'>
-                                <Button className='font-semibold bg-[#132a70] dark:text-white'>
+                                <Button className='font-semibold bg-[#132a70] dark:text-white hover:bg-[#061130]'>
                                     <span className='hidden md:block'>Create an account</span>
                                     <User className='block h-6 w-6 md:hidden' />
                                 </Button>

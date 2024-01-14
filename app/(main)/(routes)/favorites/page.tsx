@@ -3,6 +3,7 @@
 import { useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import { CarItem } from "@/app/(main)/_components/car-item"
+import Link from "next/link";
 
 export default function Favorites() {
     const favoriteCarsData = useQuery(api.cars.getFavorites)
@@ -36,20 +37,29 @@ export default function Favorites() {
         <div className='px-16 py-8 bg-[#F6F7F9] dark:bg-[#181818]'>
             <h1 className='mb-8 text-[32px] font-bold text-[#1A202C] dark:text-white'>Favorite Cars</h1>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5'>
-                {favoriteCars.map((car) => (
-                    <CarItem
-                        key={car._id}
-                        id={car._id}
-                        title={car.title ?? ''}
-                        type={car.typeName}
-                        imageUrl={car?.imageUrl ?? ''}
-                        gasoline={car.gasoline ?? 0}
-                        steering={car.steering ?? ''}
-                        capacity={car.capacityNumber}
-                        price={car.priceNumber}
-                        isLiked={car.isLiked}
-                    />
-                ))}
+                {favoriteCars.length === 0 ? (
+                    <>
+                        <div className='text-xl font-medium'>
+                            <p>No favorite cars yet.</p>
+                            <Link href='/cars' className='underline text-[#3563E9] hover:opacity-70 transition'>Add them right now!</Link>
+                        </div>
+                    </>
+                ) : (
+                    favoriteCars.map((car) => (
+                        <CarItem
+                            key={car._id}
+                            id={car._id}
+                            title={car.title ?? ''}
+                            type={car.typeName}
+                            imageUrl={car?.imageUrl ?? ''}
+                            gasoline={car.gasoline ?? 0}
+                            steering={car.steering ?? ''}
+                            capacity={car.capacityNumber}
+                            price={car.priceNumber}
+                            isLiked={car.isLiked}
+                        />
+                    ))
+                )}
             </div>
         </div>
     )
